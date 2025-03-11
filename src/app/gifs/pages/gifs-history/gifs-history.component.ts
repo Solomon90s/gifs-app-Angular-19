@@ -4,11 +4,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { GifsService } from '../../services/gifs.service';
 import { Gif } from '../../interfaces/gif.interface';
-import { GifsListComponent } from "../../components/gifs-list/gifs-list.component";
+import { GifsListComponent } from '../../components/gifs-list/gifs-list.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-gifs-history',
-  imports: [GifsListComponent],
+  imports: [GifsListComponent, CommonModule],
   templateUrl: './gifs-history.component.html',
   styleUrl: './gifs-history.component.css',
 })
