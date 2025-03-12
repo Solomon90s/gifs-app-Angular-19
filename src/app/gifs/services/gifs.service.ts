@@ -33,7 +33,9 @@ export class GifsService {
     return groups;
   });
 
-  trendingGifsLoading = signal(true);
+  trendingGifsLoading = signal(false);
+  //* página inicial de los trending gifs es 0
+  private trendingPage = signal(0);
 
   //* Para almacenar el historial de búsqueda
   searchHistory = signal<Record<string, Gif[]>>(loadFromLocalStorage());
@@ -52,17 +54,25 @@ export class GifsService {
   }
 
   loadTrendingGifs(): void {
+    if (this.trendingGifsLoading()) return; //* si es true no hace nada
+    this.trendingGifsLoading.set(true);
+
     //* Petición http
     this.#http
       .get<GiphyResponse>(`${environment.giphyUrl}/gifs/trending`, {
         params: {
           api_key: environment.giphyApiKey,
           limit: 20,
+          offset: this.trendingPage() * 20,
         },
       })
       .subscribe((response): void => {
         const gifs = GifMapper.mapGiphyItemsToGifArray(response.data);
-        this.trendingGifs.set(gifs);
+        this.trendingGifs.update((currentGifs): Gif[] => [
+          ...gifs,
+          ...currentGifs,
+        ]);
+        this.trendingPage.update((currentPage): number => currentPage + 1);
         this.trendingGifsLoading.set(false);
         console.log({ gifs });
       });
