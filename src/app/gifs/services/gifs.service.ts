@@ -23,6 +23,16 @@ export class GifsService {
   //* En esta señal almacenamos el estado de la señal
   trendingGifs = signal<Gif[]>([]);
 
+  // [[gif,gif,gif],[gif,gif,gif],[gif,gif,gif]] para el diseño masonry
+  trendingGifGroup = computed<Gif[][]>(() => {
+    const groups = [];
+    for (let i = 0; i < this.trendingGifs().length; i += 3) {
+      groups.push(this.trendingGifs().slice(i, i + 3));
+    }
+    console.log(groups);
+    return groups;
+  });
+
   trendingGifsLoading = signal(true);
 
   //* Para almacenar el historial de búsqueda
