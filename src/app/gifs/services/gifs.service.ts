@@ -26,11 +26,11 @@ const loadFromLocalStorage = () => {
 
 @Injectable({ providedIn: 'root' })
 export class GifService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   trendingGifs = signal<Gif[]>([]); //[gif,gif,gif,gif,gif,gif,]
   trendingGifsLoading = signal(false);
-  private trendingPage = signal(0);
+  private readonly trendingPage = signal(0);
 
   // [ [gif,gif,gif,], [gif,gif,gif,],[gif,gif,gif,],[gif,gif,gif,] ]
   trendingGifGroup = computed<Gif[][]>(() => {
